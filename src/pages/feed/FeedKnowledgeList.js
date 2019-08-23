@@ -2,31 +2,32 @@
  * Created by ljunb on 2016/11/19.
  * 逛吃-知识
  */
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
     StyleSheet,
     View,
-    ListView,
+    FlatList,
     RefreshControl,
 } from 'react-native'
 import {observer} from 'mobx-react/native'
 import {reaction} from 'mobx'
-import Loading from '../../components/Loading'
-import LoadMoreFooter from '../../components/LoadMoreFooter'
-import FeedSingleImageCell from '../../components/FeedSingleImageCell'
-import FeedMultiImageCell from '../../components/FeedMultiImageCell'
+import Loading from '@components/Loading'
+import LoadMoreFooter from '@components/LoadMoreFooter'
+import FeedSingleImageCell from '@components/FeedSingleImageCell'
+import FeedMultiImageCell from '@components/FeedMultiImageCell'
 import Toast from 'react-native-easy-toast'
-import FeedBaseStore from '../../store/feedBaseStore'
+import FeedBaseStore from '@store/feedBaseStore'
 
 const KNOWLEDGE_ID = 3
 
 @observer
-export default class FeedKnowledgeList extends PureComponent {
-
-    state = {
-        dataSource: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        })
+export default class FeedKnowledgeList extends Component {
+    constructor(props){
+        super(props)
+        this.state={
+            refreshing:false
+        }
     }
 
     knowledgeListStore = new FeedBaseStore(KNOWLEDGE_ID)
@@ -43,13 +44,12 @@ export default class FeedKnowledgeList extends PureComponent {
         errorMsg && this.toast.show(errorMsg)
     }
 
-    _renderRow = (feed) => <KnowledgeItem onPress={this._onPressCell} feed={feed}/>
+    _renderRow = ({item}) => {
+        return <KnowledgeItem onPress={this._onPressCell} feed={item}/>
+    }
 
     _onPressCell = feed => {
-        this.props.navigator.push({
-            id: 'FeedDetail',
-            passProps: {feed}
-        })
+        this.props.navigation.push('FeedDetail',{feed})
     }
 
     _onRefresh = () => {
@@ -66,22 +66,15 @@ export default class FeedKnowledgeList extends PureComponent {
         return (
             <View style={styles.listView}>
                 {!isFetching &&
-                <ListView
-                    dataSource={this.state.dataSource.cloneWithRows(feedList.slice(0))}
-                    renderRow={this._renderRow}
-                    renderFooter={this._renderFooter}
-                    enableEmptySections
-                    initialListSize={3}
-                    onScroll={this._onScroll}
+                <FlatList
+                    data={feedList.slice(0)}
+                    keyExtractor={(item,index)=>index.toString()}
+                    renderItem={this._renderRow}
+                    ListFooterComponent={this._renderFooter}
+                    onRefresh={()=>{}}
+                    refreshing={this.state.refreshing}
                     onEndReached={this._onEndReach}
-                    onEndReachedThreshold={30}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={isRefreshing}
-                            onRefresh={this._onRefresh}
-                            colors={['rgb(217, 51, 58)']}
-                        />
-                    }
+                    onEndReachedThreshold={0.1}
                 />
                 }
                 <Loading isShow={isFetching}/>
@@ -91,11 +84,10 @@ export default class FeedKnowledgeList extends PureComponent {
     }
 }
 
-class KnowledgeItem extends PureComponent {
-
+class KnowledgeItem extends Component {
     static propTypes = {
-        feed: React.PropTypes.object,
-        onPress: React.PropTypes.func
+        feed: PropTypes.object,
+        onPress: PropTypes.func
     }
 
     _onPress = () => {

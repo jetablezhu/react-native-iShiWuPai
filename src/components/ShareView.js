@@ -14,12 +14,15 @@ const CHANNEL_HEIGHT = 150
 const ANIMATION_DURATION = 200
 
 export default class ShareView extends Component {
-    state = {
-        isShow: false,
-        shareContent: '',
-        coverOpacityValue: new Animated.Value(0),
-        coverPositionLeftValue: new Animated.Value(0),
-        channelBottomValue: new Animated.Value(0),
+    constructor(props){
+        super(props)
+        this.state = {
+            isShow: false,
+            shareContent: '',
+            coverOpacityValue: new Animated.Value(0),
+            coverPositionLeftValue: new Animated.Value(0),
+            channelBottomValue: new Animated.Value(0),
+        }
     }
 
     share = shareContent => {
@@ -111,6 +114,7 @@ const ChannelContainer = ({
                         <TouchableOpacity
                             key={`${channelName}-${index}`}
                             onPress={() => shareChannelItemOnPress(channelName)}
+                            style={{paddingLeft:10,borderBottomWidth:1,paddingVertical:5}}
                         >
                             <Text>{channelName}</Text>
                         </TouchableOpacity>

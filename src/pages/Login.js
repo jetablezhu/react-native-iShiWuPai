@@ -1,7 +1,7 @@
 /**
  * Created by ljunb on 2017/2/22.
  */
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import {
     StyleSheet,
     View,
@@ -9,18 +9,18 @@ import {
     Text,
     TouchableOpacity
 } from 'react-native'
-import Header from '../components/Header'
+import Header from '@components/Header'
 import {observer, inject} from 'mobx-react/native'
 
 @inject('app')
 @observer
-export default class Login extends PureComponent {
+export default class Login extends Component {
 
     accounts = [
-        {name: 'QQ', icon: require('../resource/ic_account_qq.png')},
-        {name: '微信', icon: require('../resource/ic_account_wechat.png')},
-        {name: '微博', icon: require('../resource/ic_account_weibo.png')},
-        {name: '薄荷', icon: require('../resource/ic_account_boohee.png')}
+        {name: 'QQ', icon: require('@resource/ic_account_qq.png')},
+        {name: '微信', icon: require('@resource/ic_account_wechat.png')},
+        {name: '微博', icon: require('@resource/ic_account_weibo.png')},
+        {name: '薄荷', icon: require('@resource/ic_account_boohee.png')}
     ]
 
     componentWillMount() {
@@ -29,9 +29,9 @@ export default class Login extends PureComponent {
     }
 
     onBack = () => {
-        const {navigator, onResetBarStyle} = this.props
+        const {navigation, onResetBarStyle} = this.props
         onResetBarStyle && onResetBarStyle()
-        navigator.pop()
+        navigation.pop()
     }
 
     _renderAccountView = (account, key) => {

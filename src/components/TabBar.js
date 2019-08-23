@@ -2,6 +2,7 @@
  * Created by ljunb on 16/8/21.
  */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
     StyleSheet,
     View,
@@ -12,12 +13,12 @@ import {
 
 export default class TabBar extends Component {
     static propType = {
-        goToPage    : React.PropTypes.func,
-        activeTab   : React.PropTypes.number,
-        tabs        : React.PropTypes.array,
+        goToPage    : PropTypes.func,
+        activeTab   : PropTypes.number,
+        tabs        : PropTypes.array,
 
-        tabNames    : React.PropTypes.array,
-        tabIconNames: React.PropTypes.array
+        tabNames    : PropTypes.array,
+        tabIconNames: PropTypes.array
     }
 
     render() {

@@ -30,7 +30,7 @@ const FeedSingleImageItem = ({
                     <View style={styles.imgWrapper}>
                         <Image
                             style={styles.feedIcon}
-                            source={require('../resource/ic_feed_watch.png')}
+                            source={require('@resource/ic_feed_watch.png')}
                         />
                         <Text style={styles.viewCount}>{viewCount}</Text>
                     </View>
@@ -39,7 +39,7 @@ const FeedSingleImageItem = ({
             <Image
                 style={styles.image}
                 source={{uri: images[0]}}
-                defaultSource={require('../resource/img_news_default.png')}
+                defaultSource={require('@resource/img_news_default.png')}
             />
         </TouchableOpacity>
     )

@@ -2,11 +2,11 @@
  * Created by ljunb on 2017/5/25.
  */
 import React from 'react'
-import {Animated, StyleSheet, View, Text, AppRegistry} from 'react-native'
+import {StatusBar,Animated, StyleSheet, View,SafeAreaView, Text, AppRegistry} from 'react-native'
 import {Provider} from 'mobx-react/native'
-import stores from './src/store'
-import NetInfoDecorator from './src/common/NetInfoDecorator'
-import App from './src'
+import stores from '@store'
+import NetInfoDecorator from '@common/NetInfoDecorator'
+import AppContainer from "@pages/AppContainer"
 
 if (!__DEV__) {
     global.console = {
@@ -47,14 +47,17 @@ export default class Root extends React.Component {
             outputRange: [-30, __IOS__ ? 20 : 0]
         });
         return (
-            <View style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1,backgroundColor:'#fff'}}>
                 <Provider {...stores}>
-                    <App />
+                    <View style={{flex:1}}>
+                        <StatusBar barStyle={stores.app.barStyle} animated />
+                        <AppContainer />
+                    </View>
                 </Provider>
                 <Animated.View style={[styles.netInfoView, {top: positionY}]}>
                     <Text style={styles.netInfoPrompt}>网络异常，请检查网络稍后重试~</Text>
                 </Animated.View>
-            </View>
+            </SafeAreaView>
         )
     }
 }
@@ -75,4 +78,4 @@ const styles = StyleSheet.create({
     }
 })
 
-AppRegistry.registerComponent('iShiWuPai', () => Root)
+AppRegistry.registerComponent('new_version', () => Root)

@@ -1,42 +1,42 @@
 /**
  * Created by ljunb on 16/5/30.
  */
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {
     View,
     StyleSheet,
-    WebView,
     Image,
     Text,
     TouchableOpacity,
     ScrollView,
     Platform
-} from 'react-native';
-import Header from '../../components/Header'
-import ShareView from '../../components/ShareView'
+} from 'react-native'
+import {WebView} from 'react-native-webview'
+import Header from '@components/Header'
+import ShareView from '@components/ShareView'
 
 export default class FeedDetail extends Component {
 
     render() {
-        const {feed} = this.props
+        const {feed} = this.props.navigation.state.params
 
         return (
             (feed.link && feed.content_type === 6) ?
                 <WebViewComponent
-                    popAction={() => this.props.navigator.pop()}
+                    popAction={() => this.props.navigation.pop()}
                     uri={feed.link}
                 /> :
                 <View style={{flex: 1}}>
                     {feed.type === 'food_card' ?
                         <FoodCardComponent
-                            popAction={() => this.props.navigator.pop()}
+                            popAction={() => this.props.navigation.pop()}
                             shareAction={() => this.shareView.share()}
                             collectAction={() => alert('collect')}
                             feed={feed}
                         />
                         :
                         <FoodNewsComponent
-                            popAction={() => this.props.navigator.pop()}
+                            popAction={() => this.props.navigation.pop()}
                             uri={feed.link}
                         />
                     }
@@ -76,7 +76,7 @@ const FoodCardComponent = ({
 
     let imageScale = feed.card_image.split('?')[1].split('/')[1];
     let imageSourceW = feed.card_image.split('?')[1].split('/')[3];
-    let cardImageH = gScreen.height * (imageSourceW / imageScale) / gScreen.width;
+    let cardImageH = gScreen.height * (imageSourceW / imageScale) / gScreen.width * 0.6;
 
     let platformMargin = Platform.OS === 'ios' ? -40 : -30;
 
@@ -84,7 +84,7 @@ const FoodCardComponent = ({
         <View style={{flex: 1, backgroundColor: 'white'}}>
             <Header
                 title='查看详情'
-                rightIcon={require('../../resource/ic_photo_share.png')}
+                rightIcon={require('@resource/ic_photo_share.png')}
                 onBack={popAction}
                 onRight={shareAction}
             />
@@ -105,7 +105,7 @@ const FoodCardComponent = ({
                         <Image
                             style={{width: 40, height: 40, borderRadius: 20}}
                             source={{uri: feed.publisher_avatar}}
-                            defaultSource={require('../../resource/img_default_avatar.png')}
+                            defaultSource={require('@resource/img_default_avatar.png')}
                         />
                         <View style={{marginLeft: 10}}>
                             <Text style={{color: 'black'}}>{feed.publisher}</Text>
@@ -113,9 +113,9 @@ const FoodCardComponent = ({
                         </View>
                     </View>
                     <Image
-                        style={{width: gScreen.width, height: cardImageH, marginTop: platformMargin}}
+                        style={{width: gScreen.width, height: cardImageH}}
                         source={{uri: cardImageSrc}}
-                        defaultSource={require('../../resource/img_horizontal_default.png')}
+                        defaultSource={require('@resource/img_horizontal_default.png')}
                         resizeMode={'contain'}
                     />
                     {feed.description !== '' &&
@@ -124,8 +124,7 @@ const FoodCardComponent = ({
                         borderTopWidth: 0.5,
                         paddingVertical: 20,
                         paddingHorizontal: 15,
-                        justifyContent: 'center',
-                        marginTop: platformMargin
+                        justifyContent: 'center'
                     }}>
                         <Text style={{color: 'black'}}>{feed.description}</Text>
                     </View>
@@ -138,7 +137,7 @@ const FoodCardComponent = ({
                 style={[styles.bottomToolBar, {borderTopWidth: gScreen.onePix}]}
                 onPress={collectAction}
             >
-                <Image style={{width: 18, height: 18}} source={require('../../resource/ic_feed_like.png')}/>
+                <Image style={{width: 18, height: 18}} source={require('@resource/ic_feed_like.png')}/>
                 <Text style={{color: 'black', marginLeft: 5}}>{feed.like_ct}</Text>
             </TouchableOpacity>
         </View>
@@ -165,7 +164,7 @@ const FoodNewsComponent = ({ popAction, uri }) => {
                 >
                     <Image
                         style={{width: 14, height: 14}}
-                        source={require('../../resource/ic_share_black.png')}
+                        source={require('@resource/ic_share_black.png')}
                         resizeMode="contain"
                     />
                     <Text style={{marginLeft: 5}}>分享</Text>
@@ -178,7 +177,7 @@ const FoodNewsComponent = ({ popAction, uri }) => {
                 >
                     <Image
                         style={{width: 18, height: 18}}
-                        source={require('../../resource/ic_article_collect.png')}
+                        source={require('@resource/ic_article_collect.png')}
                         resizeMode="contain"
                     />
                     <Text style={{marginLeft: 5}}>收藏</Text>

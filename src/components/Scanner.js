@@ -7,10 +7,12 @@ import {
     View,
     Text,
     Image,
+    ImageBackground,
     TouchableOpacity,
-    Animated
+    Animated,
+    NativeModules
 } from 'react-native'
-import Camera from 'react-native-camera'
+import {RNCamera} from 'react-native-camera'
 
 const ScannerHeader = ({onPress}) => {
     return (
@@ -21,7 +23,7 @@ const ScannerHeader = ({onPress}) => {
                 onPress={onPress}
             >
                 <Image style={{width: 30, height: 30, marginBottom: 5}}
-                       source={require('../resource/ic_back_white.png')}/>
+                       source={require('@resource/ic_back_white.png')}/>
                 <Text style={{color: '#fff', fontSize: 18}}>返回</Text>
             </TouchableOpacity>
         </View>
@@ -31,32 +33,34 @@ const ScannerHeader = ({onPress}) => {
 const ScannerPromptTitle = () => {
     return (
         <View style={{marginTop: 30, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <Image style={{width: 22, height: 22}} source={require('../resource/ic_scan_gray.png')}/>
+            <Image style={{width: 22, height: 22}} source={require('@resource/ic_scan_gray.png')}/>
             <Text style={{color: '#fff', fontSize: 18}}>请将食物条形码放入圈内</Text>
         </View>
     )
 }
 
 export default class Scanner extends Component {
-
-    state = {
-        isBarCodeRead: false
+    constructor(props){
+        super(props)
+        this.state = {
+            isBarCodeRead: false
+        }
     }
 
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer)
     }
 
-    _onBack = () => this.props.navigator.pop()
+    _onBack = () => this.props.navigation.pop()
 
     _onBarCodeRead = obj => {
-        const {onBarCodeRead, navigator} = this.props
+        const {onBarCodeRead, navigation} = this.props
         if (this.state.isBarCodeRead) return
 
         this.setState({isBarCodeRead: true}, () => {
             this.scannerPrompt.show()
             this.timer = setTimeout(() => {
-                navigator.pop()
+                navigation.pop()
                 onBarCodeRead && onBarCodeRead(obj)
 
                 this.scannerPrompt.hide()
@@ -65,26 +69,30 @@ export default class Scanner extends Component {
     }
 
     render() {
+        console.log(NativeModules)
         return (
-            <Camera
+            <RNCamera
                 ref={camera => this.camera = camera}
                 style={{width: gScreen.width, height: gScreen.height}}
-                aspect={Camera.constants.Aspect.fill}
+                // aspect={RNCamera.Constants.Aspect.fill}
                 onBarCodeRead={this._onBarCodeRead}
             >
                 <ScannerHeader onPress={this._onBack}/>
                 <ScannerPromptTitle/>
                 <ScannerAnimatedContent/>
                 <ScannerBarCodeReadPrompt ref={s => this.scannerPrompt = s}/>
-            </Camera>
+            </RNCamera>
         )
     }
 }
 
 class ScannerAnimatedContent extends Component {
-    state = {
-        down: true,
-        positionAnimatedValue: new Animated.Value(0)
+    constructor(props){
+        super(props)
+        this.state = {
+            down: true,
+            positionAnimatedValue: new Animated.Value(0)
+        }
     }
 
     componentDidMount() {
@@ -107,26 +115,29 @@ class ScannerAnimatedContent extends Component {
         })
         return (
             <View style={{marginTop: 30, alignSelf: 'center'}}>
-                <Image
+                <ImageBackground
                     style={styles.scanArea}
-                    source={require('../resource/img_scan_area.png')}
+                    source={require('@resource/img_scan_area.png')}
                 >
                     <Animated.Image
                         style={[styles.scanLine, {top: positionY}]}
-                        source={require('../resource/img_scan_line.png')}
+                        source={require('@resource/img_scan_line.png')}
                         resizeMode="contain"
                     />
-                </Image>
+                </ImageBackground>
             </View>
         )
     }
 }
 
 class ScannerBarCodeReadPrompt extends Component {
-
-    state = {
-        isShow: false
+    constructor(props){
+        super(props)
+        this.state = {
+            isShow: false
+        }
     }
+
 
     show = () => this.setState({isShow: true})
 

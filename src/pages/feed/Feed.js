@@ -1,21 +1,20 @@
 /**
  * Created by ljunb on 16/8/21.
  */
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Image,
     TouchableOpacity,
     StyleSheet,
 } from 'react-native'
-import {Navigator} from 'react-native-deprecated-custom-components'
 import {observer, inject} from 'mobx-react/native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
-import FeedsCategoryBar from '../../components/FeedsCategoryBar'
-import FeedHomeList from './FeedHomeList';
-import FeedEvaluatingList from '../../pages/feed/FeedEvaluatingList'
-import FeedKnowledgeList from '../../pages/feed/FeedKnowledgeList';
-import FeedDelicacyList from '../../pages/feed/FeedDelicacyList';
+import FeedsCategoryBar from '@components/FeedsCategoryBar'
+import FeedHomeList from '@pages/feed/FeedHomeList';
+import FeedEvaluatingList from '@pages/feed/FeedEvaluatingList'
+import FeedKnowledgeList from '@pages/feed/FeedKnowledgeList';
+import FeedDelicacyList from '@pages/feed/FeedDelicacyList';
 
 const titles = ['首页', '评测', '知识', '美食'];
 const controllers = [
@@ -27,22 +26,19 @@ const controllers = [
 
 @inject('account')
 @observer
-export default class Home extends PureComponent {
+export default class Home extends Component {
 
     _pictureAction = () => {
         const {account: {name}} = this.props
         if (name) {
             alert(name)
         } else {
-            this.props.navigator.push({
-                id: 'Login',
-                sceneConfig: Navigator.SceneConfigs.FloatFromBottom
-            })
+            this.props.navigation.push('Login')
         }
     }
 
     render() {
-        const {navigator} = this.props;
+        const {navigation} = this.props;
 
         return (
             <View style={{flex: 1}}>
@@ -59,7 +55,7 @@ export default class Home extends PureComponent {
                                 key={titles[index]}
                                 tabLabel={titles[index]}
                                 categoryId={data.categoryId}
-                                navigator={navigator}
+                                navigation={navigation}
                             />
                         )
                     })}
@@ -74,7 +70,7 @@ const HeaderView = ({pictureAction}) => {
         <View style={[styles.header, {borderBottomWidth: gScreen.onePix}]}>
             <Image
                 style={{width: 60, height: 30}}
-                source={require('../../resource/ic_feed_nav.png')}
+                source={require('@resource/ic_feed_nav.png')}
                 resizeMode="contain"
             />
             <TouchableOpacity
@@ -84,7 +80,7 @@ const HeaderView = ({pictureAction}) => {
             >
                 <Image
                     style={{width: 20, height: 20}}
-                    source={require('../../resource/ic_feed_camera.png')}
+                    source={require('@resource/ic_feed_camera.png')}
                     resizeMode="contain"
                 />
             </TouchableOpacity>

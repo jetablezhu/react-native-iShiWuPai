@@ -4,11 +4,12 @@
 import {observable, action} from 'mobx'
 
 class App {
-    @observable barStyle = 'light-content'
+    @observable barStyle = 'default'
 
     @action
     updateBarStyle = style => {
-        this.barStyle = style
+        // this.barStyle = style
+        this.barStyle=this.barStyle
     }
 }
 

@@ -2,6 +2,7 @@
  * Created by ljunb on 16/12/1.
  */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
     ActivityIndicator,
     View,
@@ -11,7 +12,7 @@ import {
 
 export default class LoadMoreFooter extends Component {
     static propTypes = {
-        isNoMore: React.PropTypes.bool,
+        isNoMore: PropTypes.bool,
     }
 
     static defaultProps = {

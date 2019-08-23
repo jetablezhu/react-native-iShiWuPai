@@ -2,7 +2,7 @@
  * Created by ljunb on 2017/1/7.
  */
 import React, {Component} from 'react'
-import {NetInfo} from 'react-native'
+import NetInfo from '@react-native-community/netinfo'
 
 const NetInfoDecorator = WrappedComponent => class extends Component {
     constructor(props) {
@@ -13,10 +13,15 @@ const NetInfoDecorator = WrappedComponent => class extends Component {
     }
 
     componentDidMount() {
-        NetInfo.isConnected.addEventListener('change', this._handleNetworkConnectivityChange);
+        const unsbuscribe=NetInfo.addEventListener(state=>
+            this.setState({isConnected:state.isConnected})
+        )
     }
+    
 
-    _handleNetworkConnectivityChange = isConnected => this.setState({isConnected})
+    componentWillUnmount() {
+        unsbuscribe()
+    }
 
     render() {
         return <WrappedComponent {...this.props} {...this.state}/>

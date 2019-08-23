@@ -1,0 +1,32 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'new_version' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for new_version
+
+  target 'new_version-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+    pod 'react-native-camera', :path => '../node_modules/react-native-camera'
+
+    pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  end
+
+  target 'new_versionTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+target 'new_version-tvOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for new_version-tvOS
+
+end

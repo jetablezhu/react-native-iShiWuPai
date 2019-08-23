@@ -2,12 +2,14 @@
  * Created by ljunb on 2017/3/15.
  */
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {
     StyleSheet,
     View,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    ViewPropTypes
 } from 'react-native'
 
 
@@ -19,7 +21,7 @@ const LeftItem = ({onPress}) => {
             onPress={onPress}
         >
             <Image style={{width: 20, height: 20}}
-                   source={require('../resource/ic_back_dark.png')}
+                   source={require('@resource/ic_back_dark.png')}
                    resizeMode={"contain"}
             />
         </TouchableOpacity>
@@ -52,15 +54,15 @@ const RightIconItem = ({onPress, icon}) => {
 
 export default class Header extends Component {
     static propTypes = {
-        style: View.propTypes.style,
-        title: React.PropTypes.string,
-        showGoBack: React.PropTypes.bool,
-        onBack: React.PropTypes.func,
-        titleStyle: React.PropTypes.object,
-        rightTitle: React.PropTypes.string,
-        onRight: React.PropTypes.func,
-        rightIcon: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
-        renderRightItem: React.PropTypes.func
+        style: ViewPropTypes.style,
+        title: PropTypes.string,
+        showGoBack: PropTypes.bool,
+        onBack: PropTypes.func,
+        titleStyle: PropTypes.object,
+        rightTitle: PropTypes.string,
+        onRight: PropTypes.func,
+        rightIcon: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        renderRightItem: PropTypes.func
     }
 
     static defaultProps = {
